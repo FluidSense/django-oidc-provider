@@ -63,8 +63,8 @@ def protected_resource_view(scopes=None):
     if scopes is None:
         scopes = []
 
-    @wraps(view)
     def wrapper(view):
+        @wraps(view)
         def view_wrapper(request,  *args, **kwargs):
             access_token = extract_access_token(request)
 
