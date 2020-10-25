@@ -1,6 +1,7 @@
 from base64 import b64decode
 import logging
 import re
+import inspect
 
 from functools import wraps
 from django.http import HttpResponse
@@ -65,7 +66,8 @@ def protected_resource_view(scopes=None):
 
     def wrapper(view):
         @wraps(view)
-        def view_wrapper(request,  *args, **kwargs):
+        def view_wrapper(*args, **kwargs):
+            request = args[1] if inspect.isclass(args[0]) else args[0] # Allow usage in both classes where self is first arg and functions
             access_token = extract_access_token(request)
 
             try:
